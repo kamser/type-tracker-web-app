@@ -1,0 +1,235 @@
+@view-transition{
+    navigation: auto;
+}
+
+@font-face {
+    font-family: 'Sora-Variable';
+    src: url("./assets/fonts/Sora/Sora-VariableFont_wght.ttf");
+}
+
+body{
+    margin: 0;
+    background: hsl(0, 0%, 7%);
+    color: hsl(240, 1%, 59%);
+    font-family: 'Sora-Variable', sans-serif;
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+}
+
+main{
+    width: 1440px;
+    min-width: 375px;
+    padding: 30px 0;
+}
+
+header{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    
+}
+
+nav {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+article{
+    font-size: 32px;
+}
+
+div {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+}
+
+label{
+    font-size: 16px;
+}
+
+hr{
+    height: 2px;
+    width: 100%;
+    color: hsl(0, 0%, 15%);
+    background-color: hsl(0, 0%, 15%);
+    border: none;
+}
+
+#in-live-try-information, #action-navbar-section{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 10px;
+}
+
+#action-navbar-section button{
+    background: hsl(0, 0%, 7%);
+    color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(240, 1%, 59%);
+    border-radius: 5px;
+    transition-duration: 400ms;
+    transition-timing-function: ease;
+    transition-property: 'background', 'scale';
+}
+
+#action-navbar-section button:hover{
+    box-shadow: 0 0 10px lightblue;
+    scale: 1.2;
+    cursor: pointer;
+}
+
+#action-navbar-section button:active {
+    color: hsl(210, 100%, 65%);
+    border: 1px solid hsl(210, 100%, 65%);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#main-content {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    position: relative;
+    opacity: 1;
+}
+
+@keyframes slide-down-and-fade-out {
+    from{
+        transform: translateY(0);
+    }
+    to{
+        transform: translateY(400px);
+        opacity: 0;
+    }
+}
+
+@keyframes slide-up-and-fade-in {
+    from{
+        transform: translateY(0);
+    }
+    to{
+        transform: translateY(-400px);
+        opacity: 1;
+    }
+}
+
+#main-content article{
+    max-height: 1000px;
+    min-height: 400px;
+    filter: blur(7px);
+}
+
+#main-content button{
+    background: hsl(0, 0%, 15%);
+    color: hsl(0, 0%, 100%);
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px;
+}
+
+#main-content-cover{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgb(15 13 13 / 0.2);
+    
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+
+    color: hsl(0, 0%, 100%);
+}
+
+#main-content-cover button{
+    background: hsl(214, 100%, 55%);
+    padding: 15px;
+
+    transition-duration: 1s;
+    transition-timing-function: ease;
+    transition-property: 'background', 'scale';
+}
+
+#main-content-cover button:hover{
+    background: hsl(210, 100%, 65%);
+    box-shadow: 0 0 10px lightblue;
+    scale: 1.1;
+    cursor: pointer;
+}
+
+#main-content-cover button:active{
+    background: hsl(214, 100%, 55%);
+    cursor: pointer;
+}
+
+.button-icon{
+    width: 15px;
+    height: 15px;
+    padding-left: 5px;
+}
+
+.vertical-divider{
+    color: hsl(0, 0%, 15%);
+}
+
+/* Secundary UIs*/
+
+h1{
+    color: hsl(0, 0%, 100%);
+    margin-bottom: 0;
+}
+
+#baseline-established-content
+, #high-scored-smashed-content {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.test-summary-data{
+    width: 30%;
+    margin-top: 15px;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 15px;
+}
+
+.test-summary-data div{
+    padding-top: 10px;
+    padding-left: 10px;
+    border: 1px solid hsl(0, 0%, 15%);
+    border-radius: 5px;
+    flex: 1;
+    display: block;
+}
+
+.test-summary-data div p{
+    color: hsl(0, 0%, 100%);
+    font-weight: bold;
+}
+
+.try-again-btn{
+    padding: 10px;
+    background: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 7%);
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    
+}
+
+.try-again-btn img{
+    color: black;
+}
+
+

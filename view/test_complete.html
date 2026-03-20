@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Typing Speed Test</title>
+
+  <link rel="stylesheet" href="../test_complete_styles.css">
+</head>
+<body>
+
+  <main>
+    <header>
+      <img src="../assets/images/logo-large.svg" alt="">
+      <div id="personal-mark-label">
+        <img src="../assets/images/icon-personal-best.svg" alt="">
+        <p>Personal best:</p>
+        <p id="personal-best-score">-- WPM</p>
+      </div>
+    </header>
+
+    <section id="test-complete-content">
+      <div class="custom-icon"><img src="../assets/images/icon-completed.svg" alt=""></div>
+      <div id="custom-star-icon-1"><img src="../assets/images/pattern-star-1.svg" alt=""></div>
+      <h1>Test Complete!</h1>
+      <p>Solid run. Keep pushing to beat your high score.</p>
+      <section class="test-summary-data">
+        <div>
+          <label for="">WPM: </label>
+          <span id="words-per-minute-result">--</span>
+        </div>
+        <div>
+          <label for="">Accuracy: </label>
+          <span id="accuracy-result">--%</span>
+        </div>
+        <div>
+          <label for="">Characters: </label>
+          <span id="characters-result">--/--</span>
+        </div>
+      </section>
+      <div id="custom-star-icon-2"><img src="../assets/images/pattern-star-2.svg" alt=""></div>
+      <button class="try-again-btn">Go Again <img class="button-icon" src="../assets/images/icon-restart.svg" alt=""></button>
+    </section>
+    
+  </main>
+  <script src="../src/secundaryElementCreation.js" type="text/javascript"></script>
+  <script src="../src/utils.js" type="text/javascript"></script>
+  <script src="../src/testComplete.js" type="text/javascript"></script>
+</body>
+</html>
