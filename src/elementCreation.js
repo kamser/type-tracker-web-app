@@ -5,12 +5,14 @@ const completedTypeTestSection = $('#test-complete-content');
 const baselineStablishSection = $('#baseline-established-content');
 const highScoredSmashedContent = $('#high-scored-smashed-content');
 const mainContentCover = $('#main-content-cover');
+const mainContentRestartSection = $('#main-content-restart-section')
 
 const personalBestScoreUIRef = $('#personal-best-score');
-//personalBestScore.innerText = 'holi';
+const userNameBtn = $('#user-btn');
+const logoutLink = $('#logout-link');
 
 const wordsPerMinuteUIRef = $('#word-per-minute-value');
-const accuracyValueUIRef = $('#accuracy-value');
+const accuracyUIRef = $('#accuracy-value');
 const timer = $('#time-value');
 
 const easyBtn = $('#easy-btn');
@@ -29,7 +31,7 @@ const testCompletePanel = $('#test-complete-content');
 const tryAgainBtn = $('.try-again-btn');
 
 const TEST_DURATION_IN_SECONDS = 60;
-const STOP_AT_ZERO_SEC = 45;
+const STOP_AT_ZERO_SEC = 0;
 let currentTimer = TEST_DURATION_IN_SECONDS;
 
 let currentTextLetterIndex = 0;

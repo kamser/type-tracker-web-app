@@ -3,6 +3,8 @@ startBtn.addEventListener('click', e => {
 
     removeMainContentCover();
 
+    showRestartSection();
+
     startTry();
 
     if(getSelectedMode() === 'timer') startTimer();
@@ -107,3 +109,9 @@ restartBtn.addEventListener('click', e => {
     e.preventDefault();
     restartTypeAssesment();
 });
+
+logoutLink.addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.clear()
+    redirectToLoginPage();
+})

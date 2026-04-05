@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Typing Speed Test</title>
+
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <main>
+    <header>
+      <img src="../assets/images/logo-large.svg" alt="">
+      <div id="personal-mark-label">
+        <img src="../assets/images/icon-personal-best.svg" alt="">
+        <p>Personal best:</p>
+        <p id="personal-best-score">-- WPM</p>
+        <div class="vertical-divider">|</div>
+        <div id="user-section">
+          <button id="user-btn">USER_NAME</button>
+          <div id="user-sub-menu">
+            <ul>
+              <li>
+                <a id="settings-link">Settings</a>
+              </li>
+              <li>
+                <a id="logout-link">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav>
+      <section id="in-live-try-information">
+        <div>
+          <label>WPM: </label>
+          <p id="word-per-minute-value">--</p>
+        </div>
+        <div class="vertical-divider">|</div>
+        <div>
+          <label>Accuracy: </label>
+          <p id="accuracy-value">--%</p>
+        </div>
+        <div class="vertical-divider">|</div>
+        <div>
+          <label>Time: </label>
+          <p id="time-value">:--</p>
+        </div>
+      </section>
+      <section id="action-navbar-section">
+        <div>
+          <label>Difficulty: </label>
+          <button id="easy-btn">Easy</button>
+          <button id="medium-btn">Medium</button>
+          <button id="hard-btn">Hard</button>
+        </div>
+        <div class="vertical-divider">|</div>
+        <div>
+          <label>Mode</label>
+          <button id="time-mode-btn">Timed (60s)</button>
+          <button id="passage-mode-btn">Passage</button>
+        </div>
+      </section>
+    </nav>
+
+    <hr>
+
+    <section id="main-content">
+      <article id="main-content-text">
+        The archaeological expedition unearthed artifacts that complicated prevailing theories about Bronze Age trade networks. Obsidian from Anatolia, lapis lazuli from Afghanistan, and amber from the Baltic—all discovered in a single Mycenaean tomb—suggested commercial connections far more extensive than previously hypothesized. \"We've underestimated ancient peoples' navigational capabilities and their appetite for luxury goods,\" the lead researcher observed. \"Globalization isn't as modern as we assume.
+      </article>
+
+      <div id="main-content-restart-section">
+        <hr>
+        <button id="restart-type-test-btn">Restart Test <img class="button-icon" src="../assets/images/icon-restart.svg" alt=""></button>
+      </div>
+     
+      <section id="main-content-cover">
+        <button id="start-type-test-btn">Start Typing Test</button>
+        <p>Or Click the text and start typing</p>
+      </section>
+    </section>
+    
+  </main>
+  <script src="../src/elementCreation.js" type="text/javascript"></script>
+  <script src="../src/mainAssestment.js" type="text/javascript"></script>
+  <script src="../src/eventListener.js" type="text/javascript"></script>
+  <script src="../src/utils.js" type="text/javascript"></script>
+  <script src="../src/index.js" type="text/javascript"></script>
+</body>
+</html>

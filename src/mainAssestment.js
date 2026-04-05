@@ -22,8 +22,19 @@ function startTimer(){
 function setDefaultConfiguration(){
     easyBtn.style.color = "hsl(210, 100%, 65%)";
     easyBtn.style.border = "1px solid hsl(210, 100%, 65%)";
-    setSelectedTypeText(getTypeTextBasedOnTheDifficult());
-    setSelectedTextInMainContent();
+    getAssesmentTextBasedOnTheDifficult()
+    .then(({text_content}) => {
+        setSelectedTypeText(text_content);
+        setSelectedTextInMainContent();
+    })
+    .catch((error) => {
+        console.log(error);
+        if(error.status === 401){
+            redirectToLoginPage();
+        }
+    });
+    //setSelectedTypeText(getTypeTextBasedOnTheDifficult());
+    //setSelectedTextInMainContent();
 
     timeModeBtn.style.color = "hsl(210, 100%, 65%)";
     timeModeBtn.style.border = "1px solid hsl(210, 100%, 65%)";
@@ -43,7 +54,6 @@ function updateTimer(){
 
 function calculateResultsAndRedirectToResultsPage(){
     const wordsPerMinute = calculateWordsPerMinute(correctTypeCounter, currentTimer);
-    console.log('Words per minute: ', wordsPerMinute);
     const tryAccuracy = calculateAccuracy(getCurrentSelectedTextLength(), incorrectTypeCounter);
     updateFiledsOnTheUI(wordsPerMinute, tryAccuracy);
     assesmentCompleted = true;
@@ -53,9 +63,21 @@ function calculateResultsAndRedirectToResultsPage(){
 }
 
 function redirectToSummaryTryPageAccordingResults(currentTryWordsPerMinute){
-    if(isNewBaseline(bestUserScoreAchived)) window.location.href = 'view/new_baseline_established.html';
-    else if(isNewHigherScoreSmashed(currentTryWordsPerMinute, bestUserScoreAchived))  window.location.href = 'view/high_scored_smashed.html';
-    else window.location.href = 'view/test_complete.html';
+    if(isNewBaseline(bestUserScoreAchived)) window.location.href = '/view/new_baseline_established.html';
+    else if(isNewHigherScoreSmashed(currentTryWordsPerMinute, bestUserScoreAchived)){
+        updateBestuserScoreAchivedOnDB(currentTryWordsPerMinute)
+        .then(updateUserData => {
+            const currentUserData = getUserDataFromLocalStorage();
+            currentUserData.bestScoreAchived = updateUserData.bestScoreAchived;
+            saveUserDataOnLocalStorage(currentUserData);
+            window.location.href = '/view/high_scored_smashed.html';
+        })
+        .catch(error => {
+            console.log(error);
+        });
+        
+    }  
+    else window.location.href = '/view/test_complete.html';
 }
 
 function removeMainContentCover(){
@@ -65,6 +87,14 @@ function removeMainContentCover(){
         mainContentCover.style.display = 'none';
     }
     mainContentText.style.filter =  'none';
+}
+
+function showRestartSection(){
+    mainContentRestartSection.style.visibility = 'visible';
+}
+
+function hideRestartSection(){
+    mainContentRestartSection.style.visibility = 'hidden';
 }
 
 async function getAllTheTextOpions(){
@@ -80,11 +110,40 @@ async function getAllTheTextOpions(){
         if(!response.ok) throw new Error('Could not find the file');
         
         const data = await response.json();
-        
+
         return data;
     } catch(error){
         return error.message;
     }  
+}
+
+async function updateBestuserScoreAchivedOnDB(newBestScoreAchived){
+    const url = `http://localhost:3000/auth/user/`;
+
+    const {username} = getUserDataFromLocalStorage();
+
+    try {
+        const serverResponse = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({username, bestScoreAchived: newBestScoreAchived}),
+            credentials: 'include'
+        });
+
+        const data = await serverResponse.json();
+        const {user_password, best_score_achived, ...formattedData} = data;
+
+
+        return {
+            ...formattedData,
+            bestScoreAchived: best_score_achived
+        };
+    } catch (error) {
+        throw new Error('Could not update the Score', error);
+    }
+
 }
 
 function getSelectedDifficult(){
@@ -124,9 +183,58 @@ function getTypeTextBasedOnTheDifficult(){
     return selectedTypeText;
 }
 
+async function getAssesmentTextBasedOnTheDifficult(){
+    const typeTextId = getRandomSelectedTextId();
+
+    try {
+        const serverHost = `http://localhost:3000/assesment/${typeTextId}`;
+        
+        const response = await fetch(serverHost, {
+                                    method: 'GET',
+                                    headers: {
+                                        "Authorization": `Bearer ${getUserDataFromLocalStorage().token}`,
+                                        "Content-Type": "application/json",
+
+                                    },
+                                    credentials: 'include',
+                                    //withCredentials: true,
+                                });
+        const textData = await response.json();
+
+        if(getSelectedDifficult() === 'easy'){
+            setSelectedTypeText(textData);
+        } else if(getSelectedDifficult() === 'medium'){
+            setSelectedTypeText(textData);
+        } else {
+            setSelectedTypeText(textData);
+        }
+
+        return textData;
+        
+    } catch (error) {
+        if(!getUserDataFromLocalStorage()){
+            let authError = new Error('No Authorized');
+            authError.status = 401;
+            throw authError;
+        } else {
+            let error = new Error(error.message);
+            error.status = 400;
+            throw error;
+        }
+    }
+    
+}
+
 function setSelectedTextInMainContent(){
     if(currentDifficult !== selectedDifficult){
-        setSelectedTypeText(getTypeTextBasedOnTheDifficult());
+        //setSelectedTypeText(getTypeTextBasedOnTheDifficult());
+        getAssesmentTextBasedOnTheDifficult()
+        .then(({text_content}) => {
+            setSelectedTypeText(text_content);
+            mainContentText.textContent = '';
+            mainContentText.innerText = getSelectedTypeText();
+        })
+        .catch((error) => console.log(error));
     }
 
     mainContentText.textContent = '';
@@ -135,7 +243,7 @@ function setSelectedTextInMainContent(){
 
 function setSelectedTypeText(selectedText){
     selectedTypeText = selectedText;
-    //selectedTypeText = "holi";
+    //selectedTypeText = "hooooooooooooooolllllllllllllliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";
     selectedTextLenght = selectedTypeText.length;
 }
 
@@ -257,7 +365,7 @@ function updateIncorrectTypeCounter(){
 }
 
 function calculateWordsPerMinute(totalCorrectTextCharacters, secondsToCompleteTest){
-    return (totalCorrectTextCharacters * 60) / (5 * secondsToCompleteTest);
+    return  Math.trunc((totalCorrectTextCharacters * 60) / (5 * secondsToCompleteTest));
 }
 function calculateAccuracy(totalTextCharacters, totalIncorrectTypeCounter){
     const failPercentace = (100 * totalIncorrectTypeCounter) / totalTextCharacters;
@@ -266,7 +374,7 @@ function calculateAccuracy(totalTextCharacters, totalIncorrectTypeCounter){
 }
 function updateFiledsOnTheUI(calculatedWordsPerMinute, tryAccuracy){
     wordsPerMinuteUIRef.innerText = Math.trunc(calculatedWordsPerMinute);
-    accuracyValueUIRef.innerText = Math.trunc(tryAccuracy);
+    accuracyUIRef.innerText = Math.trunc(tryAccuracy);
 }
 
 
@@ -302,5 +410,6 @@ function isNewBaseline(currentWordsPerMinuteRecord){
 }
 
 function updateBestUserScoreAchived(newObtainedScore){
+    console.log('new baseline stablished', newObtainedScore);
     bestUserScoreAchived = newObtainedScore;
 }

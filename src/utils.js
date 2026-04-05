@@ -16,8 +16,6 @@ function getDataFinalResultsFromLocalStorage(){
 
         const parsedStoredfinalResults = JSON.parse(storedData);
 
-        console.log(parsedStoredfinalResults);
-
         return {
             correctTypeCounter : parsedStoredfinalResults.correctTypeCounter,
             incorrectTypeCounter : parsedStoredfinalResults.incorrectTypeCounter,
@@ -35,7 +33,7 @@ function getDataFinalResultsFromLocalStorage(){
 
 function saveFinalResultsOnLocalStorage(correctTypeCounter, incorrectTypeCounter, wordsPerMinutesResult, accuracyResult, personalBestScore){
     try {
-        if(window.localStorage.getItem('final-results')) window.localStorage.clear();
+        if(window.localStorage.getItem('final-results')) window.localStorage.removeItem('final-results');
         
         const finalResults = {
             correctTypeCounter : correctTypeCounter,
@@ -44,25 +42,82 @@ function saveFinalResultsOnLocalStorage(correctTypeCounter, incorrectTypeCounter
             accuracyResult :  Math.trunc(accuracyResult), 
             personalBestScore:  Math.trunc(personalBestScore)
         }
-        console.log(finalResults);
+
         window.localStorage.setItem('final-results', JSON.stringify(finalResults));
     } catch (error) {
         throw new Error("Something went wrong with localStorage" + error);
     }
+}
+
+
+function getUserDataFromLocalStorage(){
+
+    try {
+        const userData = window.localStorage.getItem('user-data');
+
+        if(!userData) return null;
+
+        const parsedUserData = JSON.parse(userData);
+
+        const {auth, token, username, bestScoreAchived} = parsedUserData;
+
+        return {
+            auth,
+            token,
+            username, 
+            bestScoreAchived
+        };
+    } catch (error) {
+        throw new Error("Something went wrong with localStorage" + error);
+    }
+
     
 }
 
-function updateBasicUIUsingFinalResults(finalResult, personalBestScoreUIRef, wordsPerMinUIRef, accuracyUIRef, charactersUIRef){
+function saveUserDataOnLocalStorage(loginDataFromResponse){
+    const {auth, token, username, bestScoreAchived} = loginDataFromResponse;
+    try {
+            if(window.localStorage.getItem('user-data')) window.localStorage.removeItem('user-data');
+            
+            const userData = {
+                auth,
+                token,
+                username,
+                bestScoreAchived 
+            }
+            window.localStorage.setItem('user-data', JSON.stringify(userData));
+        } catch (error) {
+            throw new Error("Something went wrong with localStorage" + error);
+        }
+}
+
+function updateUsernameAndBestScoreAchiveOnUI(){
+    const userData = getUserDataFromLocalStorage();
+
+    if(userData){
+        personalBestScoreUIRef.innerText = userData.bestScoreAchived + " WPM" ;
+        userNameBtn.innerText  = userData.username;
+        userNameBtn.style.fontSize = '25px';
+    }
+}
+
+function updateBasicUIUsingFinalResults(finalResult){
+    if (!finalResult.isDataLoaded) return;
+    
+    personalBestScoreUIRef.innerText = finalResult.personalBestScore + " WPM" ;
+    charactersUIRef.innerText = finalResult.correctTypeCounter + "/" + finalResult.incorrectTypeCounter;
+    wordsPerMinuteUIRef.innerText = finalResult.wordsPerMinutesResult;
+    accuracyUIRef.innerText = finalResult.accuracyResult;
+}
+
+function updateNavbarInfoUsingFinalResults(finalResult){
     if (!finalResult.isDataLoaded) return;
 
-    if(charactersUIRef !== null){
-        personalBestScoreUIRef.innerText = finalResult.personalBestScore;
-        charactersUIRef.innerText = finalResult.correctTypeCounter + "/" + finalResult.incorrectTypeCounter;
-        wordsPerMinUIRef.innerText = finalResult.wordsPerMinutesResult;
-        accuracyUIRef.innerText = finalResult.accuracyResult;
-    } else {
-        personalBestScoreUIRef.innerText = finalResult.personalBestScore;
-        wordsPerMinUIRef.innerText = finalResult.wordsPerMinutesResult;
-        accuracyUIRef.innerText = finalResult.accuracyResult;
-    }
+    personalBestScoreUIRef.innerText = finalResult.personalBestScore;
+    wordsPerMinuteUIRef.innerText = finalResult.wordsPerMinutesResult;
+    accuracyUIRef.innerText = finalResult.accuracyResult;
+}
+
+function redirectToLoginPage(){
+    window.location.href = '/';
 }
